@@ -5,7 +5,7 @@
 <a  href="https://www.npmjs.com/package/easyphp"><img  src="https://raw.githubusercontent.com/GabrielMota1056/easy-php/main/logo.png"  width="546"  alt="EasyPhp" /></a>
 <p>
 <a href="https://www.npmjs.com/package/easy-php"> 
-<img  src="https://img.shields.io/npm/v/easyphp.svg?maxAge=3600"  alt="NPM version" /></a> <img src="https://img.shields.io/npm/dt/easyphp.svg" alt = "NPM downloads"></img>
+<img  src="https://img.shields.io/npm/v/easyphp.svg?maxAge=3600"  alt="NPM version" /></a> <img src="https://img.shields.io/npm/dt/easyphp.svg?maxAge=3600" alt = "NPM downloads"></img>
 <br>
 </div>
 
