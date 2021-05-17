@@ -5,7 +5,7 @@
 <a  href="https://www.npmjs.com/package/easyphp"><img  src="https://raw.githubusercontent.com/GabrielMota1056/easy-php/main/logo.png"  width="546"  alt="EasyPhp" /></a>
 <p>
 <a href="https://www.npmjs.com/package/easy-php"> 
-<img  src="https://img.shields.io/npm/v/easyphp.svg?maxAge=3600"  alt="NPM version" /></a>  <img src="https://img.shields.io/npm/dt/easyphp.svg">
+<img  src="https://img.shields.io/npm/v/easyphp.svg?maxAge=3600"  alt="NPM version" /></a> <img src="https://img.shields.io/npm/dt/easyphp.svg" alt = "NPM downloads"></img>
 <br>
 </div>
 
@@ -52,23 +52,26 @@ npm install easyphp
 
 ```js
 
-var  php  =  require('easy-php');
+var  php  =  require('easyphp');
 
   
 
-php.start(9090,  function()  {
+php.start(9090,  function(err, ping)  {
+if (err) return console.log(err);
 console.log('Started successfully!');
 })
 
   
 
-php.get('/home',  'home.php',  function()  {
+php.get('/home',  'home.php',  function(err)  {
+if (err) return console.log(err);
 console.log('The home has been accessed!');
 });
 
   
 
-php.get('/home/about',  'about.php',  function()  {
+php.get('/home/about',  'about.php',  function(err)  {
+if (err) return console.log(err);
 console.log('The "about" has been accessed!');
 });
 
