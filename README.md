@@ -29,8 +29,7 @@ EasyPHP is a Node.js module PHP preprocessor in a practical and easy way.
 - 🏓 Absurdly low latency
 
 ## Why???
-To be honest, it can take **HOURS** for you to install a php server. On top of that, some servers do not support some things from native php, which can cause a lot of mess and trouble.
-**Easyphp solves** this for you, the only thing you need to have installed is node.js, in addition, you can already start your php server in **less than 2** minutes!
+To be honest, a php server is a **lot** of work. and worse, some servers do not support some things from native php, which can cause a lot of mess and trouble. Easyphp **solves** this for you, the only thing you need to have installed is node.js, in addition, you can already start your php server in **less than 2** minutes!
 
 ##  Installation
 
@@ -70,8 +69,11 @@ console.log('The "about" has been accessed!');
 
 ##  Help
 
--  **Do I need to download php or another external program?**
-	  - No! It is not necessary to install anything other than the module. everything is integrated so there is no need.
+**Do I need to download php or another external program?**
+- No! It is not necessary to install anything other than the module. everything is integrated so there is no need.
 
--  **Are ALL php functions present?**
-	  - No, the most important functions are present, but small functions are yet to come.
+**Are ALL php functions present?**
+- No, the most important functions are present, but small functions are yet to come.
+
+**Which devices support easyphp?**
+- all with the requirements of node.js v12 or higher.
