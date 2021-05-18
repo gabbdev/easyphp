@@ -4,16 +4,19 @@
 // ██╔══╝  ██╔══██║╚════██║  ╚██╔╝  ██╔═══╝ ██╔══██║██╔═══╝ 
 // ███████╗██║  ██║███████║   ██║   ██║     ██║  ██║██║     
 // ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝     ╚═╝  ╚═╝╚═╝   
-var fs = require('fs');var express = require('express');var app = express();var cookieParser = require('cookie-parser') ; var fetch = require ('node-fetch'); const mysql = require('mysql2');const { query } = require('express');
+var fs = require('fs'); var express = require('express');var app = express();var cookieParser = require('cookie-parser') ; var fetch = require ('node-fetch'); const mysql = require('mysql2');const { query } = require('express');
  var timestamp, timestamp2;
 app.use(cookieParser())
-console.log('(Node) ' + findLength(fs.readFileSync('./node_modules/easy-php/functions.js', 'utf-8'), 'function') + ' Funções PHP iniciadas.')
+app.use(express.urlencoded({
+    extended: true
+  }));
+app.use(express.json());
 function findLength(Text, ValueToFind) {
     return Text.split(ValueToFind).length - 1
 }
 
 function ping(){
-    return timestamp2 - timestamp;
+    return Date.now() - timestamp;
 }
 function separetojs(str) { // Transforma os pontos separadores de php para o + do js.
     return str.replace(/'/g, "\"").replace(/\.(?=(?:[^"]*"[^"]*")*[^"]*$)/g, "+")
@@ -45,8 +48,7 @@ function parse_php(path) {
 
 function eval_php(path, res, req) {
     var vdie = false;
-    timestamp2 = Date.now();
-    eval(fs.readFileSync('./node_modules/easy-php/functions.js', 'utf-8'))
+    eval(fs.readFileSync('./node_modules/easyphp/php.js', 'utf-8'))
     var connection;
     var display = [];
     var parsed = parse_php(path);
@@ -61,14 +63,31 @@ function eval_php(path, res, req) {
             var $ = seporters[b];
             if ($.includes('echo')) {
                 var str = $.substring(
+                    $.indexOf("echo"), 
+                    $.length
+                );
+                var strv = $.substring(
                     $.indexOf("echo") + 4, 
+                    $.length
+                );
+
+                seporters[b] = $.replace(str, 'echo (' + separetojs(strv) + ')')
+                phps[i] = seporters.join(';')
+                $ =seporters[b];
+
+            }
+            if ($.includes('(int)')) {
+                
+            }
+            if ($.includes('print')) {
+                var str = $.substring(
+                    $.indexOf("print") + 4, 
                     $.length
                 );
                 seporters[b] = $.replace(str, '(' + separetojs(str) + ')')
                 phps[i] = seporters.join(';')
                 $ =seporters[b];
             }
-
             if ($.includes(' array')) {
                 var x$ = $.split('=')
                 var str = $.substring(
@@ -79,6 +98,25 @@ function eval_php(path, res, req) {
                 phps[i] = seporters.join(';')
                 $ =seporters[b];
             }
+            if ($.includes('asort') || $.includes('ksort')) {
+                var isn;
+                if ($.includes('asort')) isn = 'asort';
+                if ($.includes('ksort')) isn = 'ksort';
+                var x$ = $.split('=')
+                var str = $.substring(
+                    $.indexOf(isn), 
+                    $.lastIndexOf(")") + 1
+                );
+                var str2 = $.substring(
+                    $.indexOf(isn) + 6, 
+                    $.lastIndexOf(")")
+                );
+                seporters[b] = $.replace(str, isn + '(`' + str2 + '`)');
+                phps[i] = seporters.join(';')
+                $ =seporters[b];
+            }
+
+
             if ($.includes(' [') && $.includes(']')) {
                 var x$ = $.split('=')
                 var str = $.substring(
@@ -90,11 +128,16 @@ function eval_php(path, res, req) {
                 $ = seporters[b];
 
             }
+            if ($.includes('foreach')) {
+
+            }
             if ($.includes('header(')) {
                 seporters[b] = separetojs($)
                 phps[i] = seporters.join(';')
                 $ = seporters[b];
+
             }
+
         }
         eval(phps[i])
 
@@ -103,20 +146,16 @@ function eval_php(path, res, req) {
 
     return html
 }
-
-
-
-
-
 this.start = function(port,callback) {app.listen(port, function() {   if (callback) callback(port);})}
 this.get = function (address, file, callback) { 
-    app.get(address, (req,res) => {
+    app.all(address, (req,res) => {
         timestamp = Date.now();
         var error = false;
         try {
         var path = String(fs.readFileSync(file));
         var log = eval_php(path,res,req);
         res.send(log);
+        
         } catch(err) {
             var error = err;
             res.send('<h1> An error ocorrued.</h1><a>' + err + '</a><br><br>Provided by Easy-php')
@@ -124,18 +163,5 @@ this.get = function (address, file, callback) {
         if (callback) callback(error, ping()); 
     })
 }
-this.functions = function (){
-    var functionjs = fs.readFileSync('./node_modules/easy-php/functions.js', 'utf-8')
-   var l = findLength(functionjs, 'function')
-   var lastfound = 0
-   var lastfound2 = 0
-   var list = []
-   for (let i = 0; i < l; i++) {
-        lastfound = functionjs.indexOf('function' ,lastfound)
-        lastfound2 = functionjs.indexOf('(' ,lastfound2)
-        console.log(lastfound, lastfound2)
-        list.push(functionjs.substr(lastfound, lastfound2))
-   }
-   console.log(list)
-}
+this.minify = function() {const { exec } = require("child_process");exec("cd node_modules & cd easyphp & minify php.ext.js > php.js");console.log('Minified php.js')}
 module.exports = this

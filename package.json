@@ -1,14 +1,14 @@
 {
   "name": "easyphp",
-  "version": "1.0.0",
-  "description": "Advanced php page processor.",
+  "version": "1.0.7",
+  "description": "PHP web server without dependencies. Easy to install and use, compatible with all platforms.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GabrielMota1056/easy-php.git"
+    "url": "git+https://github.com/GabrielMota1056/easyphp.git"
   },
   "keywords": [
     "easyphp",
@@ -19,7 +19,10 @@
     "php",
     "server",
     "server",
-    "php-server"
+    "php-server",
+    "php-lite",
+    "phplite",
+    "preprocessor"
   ],
   "author": "Gabriel Mota",
   "license": "MIT",
@@ -30,7 +33,7 @@
     "node-fetch": "^2.6.1"
   },
   "bugs": {
-    "url": "https://github.com/GabrielMota1056/easy-php/issues"
+    "url": "https://github.com/GabrielMota1056/easyphp/issues"
   },
-  "homepage": "https://github.com/GabrielMota1056/easy-php#readme"
+  "homepage": "https://github.com/GabrielMota1056/easyphp#readme"
 }
