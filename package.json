@@ -1,15 +1,44 @@
 {
-  "name": "easyphp",
-  "version": "1.0.7",
+  "_from": "easyphp",
+  "_id": "easyphp@1.0.8",
+  "_inBundle": false,
+  "_integrity": "sha512-5T3jmXMAc0UWQKU3LKxE7rTirY46NZbqvO+OOTyEOmnH7aB7WfT4lEx2QRxGrzsJY4InY59llrg3O7v2sbRFLQ==",
+  "_location": "/easyphp",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "easyphp",
+    "name": "easyphp",
+    "escapedName": "easyphp",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/easyphp/-/easyphp-1.0.8.tgz",
+  "_shasum": "2fa4c8ebbc5b829d6be1e56f76bd554a06e13893",
+  "_spec": "easyphp",
+  "_where": "C:\\Users\\user\\Desktop\\MyPHP",
+  "author": {
+    "name": "Gabriel Mota"
+  },
+  "bugs": {
+    "url": "https://github.com/GabrielMota1056/easyphp/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "node-fetch": "^2.6.1"
+  },
+  "deprecated": false,
   "description": "PHP web server without dependencies. Easy to install and use, compatible with all platforms.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GabrielMota1056/easyphp.git"
-  },
+  "homepage": "https://github.com/GabrielMota1056/easyphp#readme",
   "keywords": [
     "easyphp",
     "easy-php",
@@ -24,16 +53,15 @@
     "phplite",
     "preprocessor"
   ],
-  "author": "Gabriel Mota",
   "license": "MIT",
-  "dependencies": {
-    "cookie-parser": "^1.4.5",
-    "express": "^4.17.1",
-    "mysql2": "^2.2.5",
-    "node-fetch": "^2.6.1"
+  "main": "index.js",
+  "name": "easyphp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GabrielMota1056/easyphp.git"
   },
-  "bugs": {
-    "url": "https://github.com/GabrielMota1056/easyphp/issues"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "https://github.com/GabrielMota1056/easyphp#readme"
+  "version": "1.0.9"
 }

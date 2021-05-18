@@ -163,5 +163,47 @@ this.get = function (address, file, callback) {
         if (callback) callback(error, ping()); 
     })
 }
+this.all = function (Page404, callback) {
+    if (typeof(callback) == 'string') Page404 = callback;
+    if (typeof(Page404) == 'function') {
+        callback = Page404;
+        Page404 = null;
+    }
+    if (!Page404) {
+        Page404 = '<h1> An error ocorrued.</h1><a>Page Not found!</a>'
+    } else {
+        Page404 = fs.readFileSync(Page404, 'utf-8')
+    }
+
+    app.all('*', (req,res) => {
+        timestamp = Date.now();
+        var error = false;
+        try {
+            var pathname = req._parsedUrl.pathname;
+            if (pathname == '/') {
+                pathname = '/index';
+            }
+            if (!fs.existsSync('.' + pathname + '.php')) {
+                if (pathname.endsWith('/')){
+                    pathname = pathname + 'index'
+                } else {
+                    pathname = pathname + '/index'
+                }
+                
+            }
+            var path = String(fs.readFileSync(String('.' + pathname + '.php').split('/.php').join('.php'), 'utf-8'));
+        } catch(err) {
+            return res.send(Page404)
+        }
+        try {
+        var log = eval_php(path,res,req);
+        res.send(log);
+        } catch(err) {
+            var error = err;
+            res.send('<h1> An error ocorrued.</h1><a>' + err + '</a><br><br>Provided by Easy-php')
+        }
+        if (callback) callback(error); 
+    })
+}
 this.minify = function() {const { exec } = require("child_process");exec("cd node_modules & cd easyphp & minify php.ext.js > php.js");console.log('Minified php.js')}
 module.exports = this
