@@ -11,6 +11,7 @@
 
 ##  Table of contents
 
+- [Documentation](https://easyphp.gitbook.io/easyphp/)
 -  [About](#about)
 -  [Why?](#why)
 -  [Installation](#installation)
@@ -18,7 +19,8 @@
 -  [Help](#help)
 
   
-
+## Documentation
+[In the documentation](https://easyphp.gitbook.io/easyphp/) you can see the existing functions and how to install in detail.
 ##  About
 
 EasyPHP is a Node.js module PHP preprocessor in a practical and easy way.
@@ -63,6 +65,7 @@ console.log('The home has been accessed!');
 php.get('/home/about',  'about.php',  function(err)  {
 console.log('The "about" has been accessed!');
 });
+php.all() // Loads all folders and subfolders.
 ```
 
   
