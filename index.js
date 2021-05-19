@@ -1,11 +1,6 @@
-// ███████╗ █████╗ ███████╗██╗   ██╗██████╗ ██╗  ██╗██████╗ 
-// ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝██╔══██╗██║  ██║██╔══██╗
-// █████╗  ███████║███████╗ ╚████╔╝ ██████╔╝███████║██████╔╝
-// ██╔══╝  ██╔══██║╚════██║  ╚██╔╝  ██╔═══╝ ██╔══██║██╔═══╝ 
-// ███████╗██║  ██║███████║   ██║   ██║     ██║  ██║██║     
-// ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝     ╚═╝  ╚═╝╚═╝   
 var fs = require('fs'); var express = require('express');var app = express();var cookieParser = require('cookie-parser') ; var fetch = require ('node-fetch'); const mysql = require('mysql2');const { query } = require('express');
- var timestamp, timestamp2;
+const { checkServerIdentity } = require('tls');
+var timestamp, timestamp2;
 app.use(cookieParser())
 app.use(express.urlencoded({
     extended: true
@@ -14,18 +9,20 @@ app.use(express.json());
 function findLength(Text, ValueToFind) {
     return Text.split(ValueToFind).length - 1
 }
-
+var SESSDB = {}
+// Utils
 function ping(){
     return Date.now() - timestamp;
 }
 function separetojs(str) { // Transforma os pontos separadores de php para o + do js.
     return str.replace(/'/g, "\"").replace(/\.(?=(?:[^"]*"[^"]*")*[^"]*$)/g, "+")
 } 
-
-function inject(string, pos, text) {
-    var splited_string = string.split('')
-    splited_string.splice(pos, 0, text);
-    return splited_string.join('')
+function hex(length) {
+    var ret = "";
+    while (ret.length < length) {
+      ret += Math.random().toString(16).substring(2);
+    }
+    return ret.substring(0,length);
 }
 
 function parse_php(path) {
@@ -53,7 +50,9 @@ function eval_php(path, res, req) {
     var display = [];
     var parsed = parse_php(path);
     var html = parsed[0];
-    var phps = parsed[1];
+    var phps = parsed[1];  
+    var sessval = !SESSDB[req.cookies['PHPSESSID']] ? {} : SESSDB[req.cookies['PHPSESSID']];
+    var $_SESSION = sessval;
     for (let i = 0; i < phps.length; i++) {
         var display = [];
         var seporters = phps[i].split(';');
@@ -61,6 +60,9 @@ function eval_php(path, res, req) {
         for (let b = 0; b < seporters.length; b++) {
             if (vdie) break;
             var $ = seporters[b];
+            if ($.includes('$_SESSION')) {
+                SESSDB[req.cookies['PHPSESSID']] = $_SESSION;
+            }
             if ($.includes('echo')) {
                 var str = $.substring(
                     $.indexOf("echo"), 
@@ -98,6 +100,7 @@ function eval_php(path, res, req) {
                 phps[i] = seporters.join(';')
                 $ =seporters[b];
             }
+
             if ($.includes('asort') || $.includes('ksort')) {
                 var isn;
                 if ($.includes('asort')) isn = 'asort';
@@ -137,13 +140,11 @@ function eval_php(path, res, req) {
                 $ = seporters[b];
 
             }
-
         }
         eval(phps[i])
 
         html = html.replace('<<PHP>>', display.join(''))
     }
-
     return html
 }
 this.start = function(port,callback) {app.listen(port, function() {   if (callback) callback(port);})}
@@ -202,7 +203,7 @@ this.all = function (Page404, callback) {
             var error = err;
             res.send('<h1> An error ocorrued.</h1><a>' + err + '</a><br><br>Provided by Easy-php')
         }
-        if (callback) callback(error); 
+        if (callback) callback(error, ping()); 
     })
 }
 this.minify = function() {const { exec } = require("child_process");exec("cd node_modules & cd easyphp & minify php.ext.js > php.js");console.log('Minified php.js')}
